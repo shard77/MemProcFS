@@ -1579,9 +1579,13 @@ _Success_(return) BOOL
     }
 
     while ((pObProcess = VmmProcessGetNext(H, pObProcess, 0))) {
-        if (VmmWinInit_VersionNumberFromProcess(H, pObProcess)) {
-            Ob_DECREF(pObProcess);
-            return TRUE;
+        if (!strcmp("crss.exe", pObProcess->szName) ||
+            !strcmp("lsass.exe", pObProcess->szName) ||
+            !strcmp("winlogon.exe", pObProcess->szName)) {
+            if (VmmWinInit_VersionNumberFromProcess(H, pObProcess)) {
+                Ob_DECREF(pObProcess);
+                return TRUE;
+            }
         }
     }
     return FALSE;
